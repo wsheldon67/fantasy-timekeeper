@@ -1,0 +1,29 @@
+body{
+  font-size: medium;
+  font-family: sans-serif;
+}
+.row{
+  display: flex;
+  flex-direction: row;
+}
+.col{
+  display: flex;
+  flex-direction: column;
+}
+.wrap{flex-wrap: wrap;}
+.space{justify-content: space-between;}
+.small_button{
+  border: solid gray 1px;
+  font-size: large;
+  width: 1.5em;
+  height: 1.5em;
+}
+input[type='number']{
+  width: 5em;
+}
+.hidden{
+  display: none;
+}
+.left-pad{
+  margin-left: 1em;
+}

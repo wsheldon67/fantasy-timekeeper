@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel='stylesheet' href='../modules/main.css'>
+<style>
+body{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#enter_log{
+  display: flex;
+  flex-direction: column;
+}
+</style>
+</head>
+<body>
+<div id='enter_log'></div>
+<div id='read_log'></div>
+<script type='module'>
+import * as log from './log.js'
+log.render_save()
+</script>
+</body>
+</html>
