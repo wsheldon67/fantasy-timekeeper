@@ -1,0 +1,27 @@
+{
+  "name": "fantasy-timekeeper",
+  "version": "1.0.0",
+  "description": "Track in-game time easily and create campaign notes with timestamps.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wsheldon67/fantasy-timekeeper.git"
+  },
+  "keywords": [
+    "rpg",
+    "d&d",
+    "dungeons",
+    "dragons",
+    "pathfinder",
+    "log"
+  ],
+  "author": "William",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wsheldon67/fantasy-timekeeper/issues"
+  },
+  "homepage": "https://github.com/wsheldon67/fantasy-timekeeper#readme"
+}
