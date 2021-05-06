@@ -27,6 +27,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-formidable": "^1.2.0",
+    "mongodb": "^3.6.6",
     "node": "^16.0.0"
   }
 }
