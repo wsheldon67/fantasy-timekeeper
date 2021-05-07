@@ -1,4 +1,4 @@
-function get_data(url,params){
+function getData(url,params){
   return new Promise((resolve,reject)=>{
     var req = new XMLHttpRequest()
     req.open('POST',url)

@@ -1,15 +1,21 @@
-
-export function getData(url,formData){
+export function getData(url,params){
   return new Promise((resolve,reject)=>{
     var req = new XMLHttpRequest()
     req.open('POST',url)
     req.onload = ()=>{
-      if (req.status == 200){resolve(JSON.parse(req.responseText))}
-      else {reject(Error(req.statusText))}
+      try{if (req.status == 200){resolve(JSON.parse(req.responseText))}
+      else {reject(Error(req.statusText))}}
+      catch (err){
+        console.error(`Server sent ${req.responseText} from ${url} and JSON didnt like it.`)
+        reject()
+      }
     }
     req.onerror = ()=>{reject(Error('Network Error'))}
-    if (formData){req.send(formData)}
-    else {req.send()}
+    var formData = formID()
+    for (var i in params){
+      formData.append(i,params[i])
+    }
+    req.send(formData)
   })
 }
 

@@ -1,4 +1,4 @@
-import {getData} from './help.js'
+import {getData, leadingZeros} from './help.js'
 
 
 export function render_save(){
@@ -20,9 +20,10 @@ function keyDown(evt){
 
 function saveLog(){
   getData('global-time').then((res)=>{
-    var formData = new FormData()
-    formData.append('text',document.getElementById('log_text').value)
-    formData.append('timestamp',res)
+    var formData = {
+      'text': document.getElementById('log_text').value,
+      'timestamp':JSON.stringify(res)
+    }
     getData('set-log',formData).then(()=>{
       document.getElementById('log_text').value = ''
       readLog(20)
@@ -32,8 +33,7 @@ function saveLog(){
 
 // TODO these chew up a lot of data, fix that
 export function readLog(limit){
-  var formData = new FormData()
-  formData.append('limit',limit)
+  var formData = {'limit': limit}
   getData('log',formData).then((res)=>{
     document.getElementById('read_log').innerHTML = ''
     for (var i of res){
@@ -45,21 +45,20 @@ export function readLog(limit){
 }
 
 export function readLogTime(limit){
-  var formData = new FormData()
-  formData.append('limit',limit)
+  var formData = {'limit':limit}
   getData('log',formData).then((res)=>{
     document.getElementById('read_log').innerHTML = ''
     for (var i of res){
       var cont = document.createElement('div') // container
-      cont.id = 'log_cont_'+i.id
+      cont.id = 'log_cont_'+i._id
       cont.classList.add('row')
       var del = document.createElement('button') // delete item
-      del.value = i.id
+      del.value = i._id
       del.innerHTML = 'x'
       del.addEventListener('click',deleteLog)
       cont.appendChild(del)
       var time = document.createElement('div') // timestamp
-      time.innerHTML = i.timestamp
+      time.innerHTML = pretty_time(i.timestamp)
       cont.appendChild(time)
       var text = document.createElement('text') // text
       text.innerHTML = i.text
@@ -72,8 +71,13 @@ export function readLogTime(limit){
 
 function deleteLog(){
   if (!confirm('Are you sure you want to delete this log item?')){return}
-  var formData = new FormData()
-  formData.append('id',this.value)
   document.getElementById('log_cont_'+this.value).remove()
-  getData('delete-log',formData)
+  getData('delete-log',{'_id':this.value})
+}
+
+function pretty_time(i){
+  var result = leadingZeros(i.year.value,4) + '-' + leadingZeros(i.month.value,2) + '-'
+  result += leadingZeros(i.day.value,2) + ' ' + leadingZeros(i.hour.value,2) + ':'
+  result += leadingZeros(i.minute.value,2) + ':' + leadingZeros(i.second.value,2)
+  return result
 }

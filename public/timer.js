@@ -83,7 +83,7 @@ function addTime(){
   postTime()
 }
 function subTime(){
-  t.add(-quick_adds[this.value][0],quick_adds[this.value][1])
+  timers.add(-quick_adds[this.value][0],quick_adds[this.value][1])
   postTime()
 }
 
@@ -205,9 +205,7 @@ function postTime(){
     }
     document.getElementById('name_'+id).value = i.name
   }
-  var formData = new FormData()
-  formData.append('json',timers.toJSON())
-  getData('set-timer',formData)
+  getData('set-timer',{'json':timers.toJSON()})
 }
 
 function removeTimer(){
@@ -215,19 +213,16 @@ function removeTimer(){
   var options = this.id.split('_')
   var id = Number(options[1])
   timers.removeTimer(id)
-  var formData = new FormData()
-  formData.append('json',timers.toJSON())
-  getData('set-timer',formData).then(location.reload())
+  getData('set-timer',{'json':timers.toJSON()}).then(location.reload())
 }
 
 
-getData('timer').then((res)=>{
-  var arry = parseJSON(res.value)
-  for (var i of arry){
+getData('get-timer').then((res)=>{
+  for (var i of res){
     addTimer()
   }
   timers.timers = []
-  timers.fromJSON(res.value)
+  timers.fromJSON(res, true)
   postTime()
   document.getElementById('del_0').setAttribute('disabled','disabled')
 })

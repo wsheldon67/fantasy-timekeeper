@@ -121,8 +121,9 @@ export class AllTimers{
   removeTimer(id){
     this.timers.splice(id,1)
   }
-  fromJSON(json){
-    var arry = parseJSON(json)
+  fromJSON(json, actually_not){
+    if (actually_not){var arry = json}
+    else {var arry = parseJSON(json)}
     for (var i of arry){
       // i = timer object
       this.addTimer()
@@ -132,7 +133,7 @@ export class AllTimers{
       }
     }
   }
-  toJSON(){
+  toJSON(actually_not){
     var res = []
     var toSave = ['year','month','day','hour','minute','second','name','one_based','pm_switch','name','id']
     for (var i of this.timers){
@@ -144,7 +145,8 @@ export class AllTimers{
       }
       res.push(data)
     }
-    return JSON.stringify(res)
+    if (actually_not){return res}
+    else {return JSON.stringify(res)}
   }
   add(q,type){
     for (var i of this.timers){
