@@ -2,6 +2,10 @@ import {getData, leadingZeros} from './help.js'
 
 
 export function render_save(){
+  const name = document.createElement('input')
+  name.placeholder = 'Name'
+  name.id = 'player_name'
+  document.getElementById('enter_log').appendChild(name)
   var textarea = document.createElement('textarea') // textarea
   textarea.addEventListener('keydown',keyDown)
   textarea.id = 'log_text'
@@ -22,7 +26,8 @@ function saveLog(){
   getData('global-time').then((res)=>{
     var formData = {
       'text': document.getElementById('log_text').value,
-      'timestamp':JSON.stringify(res)
+      'timestamp':JSON.stringify(res),
+      'player':document.getElementById('player_name').value
     }
     getData('set-log',formData).then(()=>{
       document.getElementById('log_text').value = ''
@@ -60,6 +65,10 @@ export function readLogTime(limit){
       var time = document.createElement('div') // timestamp
       time.innerHTML = pretty_time(i.timestamp)
       cont.appendChild(time)
+      const player = document.createElement('div') // player
+      player.innerHTML = i.player
+      player.classList.add('left-pad')
+      cont.appendChild(player)
       var text = document.createElement('text') // text
       text.innerHTML = i.text
       text.classList.add('left-pad')

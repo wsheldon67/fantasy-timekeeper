@@ -33,7 +33,8 @@ app.post('/set-log',(req,res)=>{
   const to_in = {
     'id': req.fields.id,
     'text':req.fields.text,
-    'timestamp':JSON.parse(req.fields.timestamp)
+    'timestamp':JSON.parse(req.fields.timestamp),
+    'player':req.fields.player
   }
   insert(to_in)
   .then((doc)=>{res.send({})})
@@ -47,6 +48,7 @@ app.post('/global-time',(req,res)=>{
 })
 
 app.post('/log',(req,res)=>{
+  console.log(req.fields)
   const options = {
     'timestamp.year.value':-1,
     'timestamp.month.value':-1,
@@ -55,7 +57,7 @@ app.post('/log',(req,res)=>{
     'timestamp.minute.value':-1,
     'timestamp.second.value':-1
   }
-  get_many({id: req.fields.id}, options)
+  get_many({id: req.fields.id}, options, Number(req.fields.limit))
   .then((doc)=>{
     res.send(JSON.stringify(doc))
   })
@@ -72,10 +74,10 @@ async function del(query){
   const p = await col.deleteOne(query)
   return p
 }
-async function get_many(query, options){
+async function get_many(query, options, limit){
   const db = client.db('timer')
   const col = db.collection('logs')
-  const cursor = col.find(query).sort(options)
+  const cursor = col.find(query).sort(options).limit(limit)
   const p = await cursor.toArray()
   return p
 }
