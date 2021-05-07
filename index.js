@@ -100,6 +100,6 @@ async function insert(doc){
 }
 
 client.connect()
-.then(()=>{app.listen(process.env.PORT, ()=>{
+.then(()=>{app.listen(port, ()=>{
   console.log(`Server started at port ${port}`)
 })})
