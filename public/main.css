@@ -27,3 +27,13 @@ input[type='number']{
 .left-pad{
   margin-left: 1em;
 }
+.log-row{
+  display: grid;
+  grid-template-columns: 2em 10.1em 10em auto;
+  padding: .2em 0em;
+  border-bottom: 1px solid #999999;
+}
+button.x{
+  width: 1.5em;
+  height: 1.5em;
+}

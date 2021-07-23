@@ -56,11 +56,12 @@ export function readLogTime(limit){
     for (var i of res){
       var cont = document.createElement('div') // container
       cont.id = 'log_cont_'+i._id
-      cont.classList.add('row')
+      cont.classList.add('log-row')
       var del = document.createElement('button') // delete item
       del.value = i._id
       del.innerHTML = 'x'
       del.addEventListener('click',deleteLog)
+      del.classList.add('x')
       cont.appendChild(del)
       var time = document.createElement('div') // timestamp
       time.innerHTML = pretty_time(i.timestamp)
