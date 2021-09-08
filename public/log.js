@@ -38,7 +38,7 @@ function saveLog(){
 
 // TODO these chew up a lot of data, fix that
 export function readLog(limit){
-  var formData = {'limit': limit}
+  var formData = {limit}
   getData('log',formData).then((res)=>{
     document.getElementById('read_log').innerHTML = ''
     for (var i of res){
@@ -50,7 +50,7 @@ export function readLog(limit){
 }
 
 export function readLogTime(limit){
-  var formData = {'limit':limit}
+  var formData = {limit}
   getData('log',formData).then((res)=>{
     document.getElementById('read_log').innerHTML = ''
     for (var i of res){

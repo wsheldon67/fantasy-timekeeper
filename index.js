@@ -34,7 +34,8 @@ app.post('/set-log',(req,res)=>{
     'id': req.fields.id,
     'text':req.fields.text,
     'timestamp':JSON.parse(req.fields.timestamp),
-    'player':req.fields.player
+    'player':req.fields.player,
+    'tags':req.fields.tags
   }
   insert(to_in)
   .then((doc)=>{res.send({})})
@@ -55,9 +56,13 @@ app.post('/log',(req,res)=>{
     'timestamp.day.value':-1,
     'timestamp.hour.value':-1,
     'timestamp.minute.value':-1,
-    'timestamp.second.value':-1
+    'timestamp.second.value':-1,
+    '_id':-1
   }
-  get_many({id: req.fields.id}, options, Number(req.fields.limit))
+  const query = {id: req.fields.id}
+  const tags = req.fields.tags
+  if (tags && tags != 'undefined') {query.tags = {$in: tags.split('-')}}
+  get_many( query, options, Number(req.fields.limit))
   .then((doc)=>{
     res.send(JSON.stringify(doc))
   })
