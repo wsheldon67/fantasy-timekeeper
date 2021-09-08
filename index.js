@@ -16,13 +16,14 @@ app.use(express.static('public'))
 app.post('/set-timer',(req,res)=>{
   update(
     {id: req.fields.id},
-    {$set: {timers: JSON.parse(req.fields.json)}}
+    {$set: {timers: JSON.parse(req.fields.json)}},
+    'timers'
   )
   .then((doc)=>{res.send(doc)})
 })
 
 app.post('/get-timer',(req,res)=>{
-  get({id: req.fields.id})
+  get({id: req.fields.id},'timers')
   .then((doc)=>{
     if (doc){res.send(JSON.stringify(doc.timers))}
     else {res.send({})}
@@ -37,12 +38,12 @@ app.post('/set-log',(req,res)=>{
     'player':req.fields.player,
     'tags':req.fields.tags
   }
-  insert(to_in)
+  insert(to_in,'logs')
   .then((doc)=>{res.send({})})
 })
 
 app.post('/global-time',(req,res)=>{
-  get({id: req.fields.id})
+  get({id: req.fields.id},'timers')
   .then((doc)=>{
     res.send(JSON.stringify(doc.timers[0]))
   })
@@ -62,47 +63,65 @@ app.post('/log',(req,res)=>{
   const query = {id: req.fields.id}
   const tags = req.fields.tags
   if (tags && tags != 'undefined') {query.tags = {$in: tags.split('-')}}
-  get_many( query, options, Number(req.fields.limit))
+  get_many( query, options, Number(req.fields.limit),'logs')
   .then((doc)=>{
     res.send(JSON.stringify(doc))
   })
 })
 
 app.post('/delete-log',(req,res)=>{
-  del({_id: new ObjectId(req.fields._id)})
+  del({_id: new ObjectId(req.fields._id)},'logs')
   .then((doc)=>{res.send({})})
 })
 
-async function del(query){
+async function del(query, collection){
   const db = client.db('timer')
-  const col = db.collection('logs')
+  const col = db.collection(collection)
   const p = await col.deleteOne(query)
   return p
 }
-async function get_many(query, options, limit){
+async function get_many(query, options, limit, collection){
   const db = client.db('timer')
-  const col = db.collection('logs')
+  const col = db.collection(collection)
   const cursor = col.find(query).sort(options).limit(limit)
   const p = await cursor.toArray()
   return p
 }
-async function update(search, set){
+async function update(search, set, collection){
   const db = client.db('timer')
-  const col = db.collection('timers')
+  const col = db.collection(collection)
   const p = await col.updateOne(search, set, {upsert: true})
   return p
 }
-async function get(search){
+async function get(search, collection){
   const db = client.db('timer')
-  const col = db.collection('timers')
+  const col = db.collection(collection)
   const p = await col.findOne(search)
   return p
 }
-async function insert(doc){
+async function insert(doc, collection){
   const db = client.db('timer')
-  const col = db.collection('logs')
+  const col = db.collection(collection)
   const p = await col.insertOne(doc)
 }
+
+app.post('/add-tag',(req,res)=>{
+  update({id: req.fields.id},{$addToSet: {tags: req.fields.tag}},'tags')
+  .then((doc)=>{res.send({})})
+})
+app.post('/tag-to-log',(req,res)=>{
+  const search = {
+    id: req.fields.id,
+    _id: new ObjectId(req.fields._id)
+  }
+  update(search, {$addToSet:{tags: req.fields.tag}},'logs')
+  .then((doc)=>{res.send({})})
+})
+
+app.post('/get-tags',(req,res)=>{
+  get({id: req.fields.id},'tags')
+  .then((doc)=>{res.send(JSON.stringify(doc))})
+})
 
 client.connect()
 .then(()=>{app.listen(port, ()=>{

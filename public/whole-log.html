@@ -4,10 +4,32 @@
 <link rel='stylesheet' href='./main.css'>
 </head>
 <body>
+<div id='top'></div>
 <div id='read_log' width='50px;'></div>
 <script type='module'>
 import * as log from './log.js'
+import { getData, getID } from './help.js'
 log.readLogTime(9999)
+
+// load taglist
+const taglist = document.createElement('datalist')
+taglist.id = 'taglist'
+
+async function pop_taglist() {
+  const tagdata = await getData('get-tags')
+  for (let tag of tagdata.tags) {
+    const el = document.createElement('option')
+    el.value = tag
+    taglist.appendChild(el)
+  }
+  document.getElementById('top').appendChild(taglist)
+}
+pop_taglist()
+
+const home = document.createElement('a')
+home.href = `./whole-log.html?id=${getID()}`
+home.innerHTML = 'Home'
+document.getElementById('top').appendChild(home)
 </script>
 </body>
 </html>

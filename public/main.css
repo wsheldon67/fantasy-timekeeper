@@ -29,14 +29,17 @@ input[type='number']{
 }
 .log-row{
   display: grid;
-  grid-template-columns: 2em 10.1em 10em auto;
+  grid-template-columns: 2em repeat(2, 10em) auto 10em 8em;
   padding: .2em 0em;
   border-bottom: 1px solid #999999;
 }
 .log-row:hover {
-  background-color: #EEEEEE;
+  background-color: white !important;
 }
 button.x{
   width: 1.5em;
   height: 1.5em;
+}
+.tags > a {
+  padding: 0em .3em;
 }
