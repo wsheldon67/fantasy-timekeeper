@@ -64,7 +64,7 @@ export function readLogTime(limit){
       //cont.classList.add(`color${i.timestamp.day.value % 4}`)
       const t = i.timestamp
       const huepday = 32
-      const hue = (t.month.value * t.day.overflow * huepday + t.day.value * huepday + t.hour.value) % 360
+      const hue = (t.month.value * t.day.overflow * huepday + t.day.value * huepday + t.hour.value * 1.2) % 360
       cont.style.backgroundColor = `hsl(${hue}, 100%, 95%)`
 
       var del = document.createElement('button') // delete item
