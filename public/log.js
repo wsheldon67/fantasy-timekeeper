@@ -117,8 +117,9 @@ function deleteLog(){
 }
 
 function pretty_time(i){
-  var result = leadingZeros(i.year.value,4) + '-' + leadingZeros(i.month.value,2) + '-'
-  result += leadingZeros(i.day.value,2) + ' ' + leadingZeros(i.hour.value,2) + ':'
+  const one_based = i.one_based ? 1 : 0
+  var result = leadingZeros(i.year.value,4) + '-' + leadingZeros(i.month.value + one_based,2) + '-'
+  result += leadingZeros(i.day.value + one_based,2) + ' ' + leadingZeros(i.hour.value,2) + ':'
   result += leadingZeros(i.minute.value,2) + ':' + leadingZeros(i.second.value,2)
   return result
 }
