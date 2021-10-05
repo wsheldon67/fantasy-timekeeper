@@ -36,7 +36,7 @@ app.post('/set-log',(req,res)=>{
     'text':req.fields.text,
     'timestamp':JSON.parse(req.fields.timestamp),
     'player':req.fields.player,
-    'tags':req.fields.tags
+    'tags':req.fields.tags || []
   }
   insert(to_in,'logs')
   .then((doc)=>{res.send({})})
